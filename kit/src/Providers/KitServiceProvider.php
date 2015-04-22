@@ -1,6 +1,7 @@
 <?php namespace Kit\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Routing\Router;
 
 class KitServiceProvider extends ServiceProvider {
 	/**
@@ -17,8 +18,16 @@ class KitServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function boot()
+	public function boot(Router $router)
 	{
+		$router->group(['namespace' => 'Kit\Http\Controllers'], function($router)
+		{
+			require __DIR__.'/../Http/routes.php';
+		});
+
+		// Register Views
+		$this->loadViewsFrom(__DIR__.'/../../resources/views', 'kit');
+
 		// Register the application command
 		$this->commands($this->commands);
 
@@ -43,5 +52,4 @@ class KitServiceProvider extends ServiceProvider {
 	{
 		//
 	}
-
 }
