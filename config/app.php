@@ -145,6 +145,12 @@ return [
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
 
+		'Kit\Providers\KitServiceProvider',
+
+		/*
+		 * Third Party Service Providers
+		 */
+		'Cartalyst\Sentry\SentryServiceProvider',
 	],
 
 	/*
@@ -193,6 +199,10 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 
+		/*
+		 * Third Party Aliases
+		 */
+		'Sentry' => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
 	],
 
 ];
