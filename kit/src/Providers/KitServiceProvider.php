@@ -3,6 +3,14 @@
 use Illuminate\Support\ServiceProvider;
 
 class KitServiceProvider extends ServiceProvider {
+	/**
+	 * The Artisan commands provided by your application.
+	 *
+	 * @var array
+	 */
+	protected $commands = [
+		'Kit\Console\Commands\AppInstallCommand',
+	];
 
 	/**
 	 * Bootstrap the application services.
@@ -12,6 +20,7 @@ class KitServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		//
+		$this->commands($this->commands);
 	}
 
 	/**
