@@ -4,7 +4,7 @@ use Illuminate\Support\ServiceProvider;
 
 class KitServiceProvider extends ServiceProvider {
 	/**
-	 * The Artisan commands provided by your application.
+	 * The Artisan commands provided by starter kit.
 	 *
 	 * @var array
 	 */
@@ -19,8 +19,19 @@ class KitServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		//
+		// Register the application command
 		$this->commands($this->commands);
+
+		// Publish the Resources
+		# Migrations
+		$this->publishes([
+	    	__DIR__.'/../../database/migrations/' => database_path('/migrations')
+		], 'migrations');
+
+		# Seeders
+		$this->publishes([
+	    	__DIR__.'/../../database/seeds/' => database_path('/seeds')
+		], 'seeds');
 	}
 
 	/**

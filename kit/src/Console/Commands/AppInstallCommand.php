@@ -97,7 +97,8 @@ class AppInstallCommand extends Command {
 		$this->sentryRunner();
 
 		// Seed the tables with dummy data
-		//$this->call('db:seed');
+		$this->call('db:seed', ['--class' => 'KitDatabaseSeeder']);
+		$this->call('db:seed');
 	}
 	/**
 	 * Asks the user for the first name.
