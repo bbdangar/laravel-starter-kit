@@ -25,8 +25,9 @@ class KitServiceProvider extends ServiceProvider {
 			require __DIR__.'/../Http/routes.php';
 		});
 
-		// Register Views
+		// Register Assets
 		$this->loadViewsFrom(__DIR__.'/../../resources/views', 'kit');
+		$this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'kit');
 
 		// Register the application command
 		$this->commands($this->commands);

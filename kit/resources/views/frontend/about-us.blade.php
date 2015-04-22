@@ -1,4 +1,4 @@
-@extends('frontend/layouts/default')
+@extends('kit::frontend.layouts.default')
 
 {{-- Page title --}}
 @section('title')

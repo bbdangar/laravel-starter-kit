@@ -129,15 +129,16 @@ Route::group(array('prefix' => 'authenticate'), function()
 |
 */
 
-/*Route::get('about-us', function()
+Route::get('about-us', function()
 {
 	//
-	return View::make('frontend/about-us');
+	return View::make('kit::frontend/about-us');
 });
 
 Route::get('contact-us', array('as' => 'contact-us', 'uses' => 'ContactUsController@getIndex'));
 Route::post('contact-us', 'ContactUsController@postIndex');
 
+/*
 Route::get('blog/{postSlug}', array('as' => 'view-post', 'uses' => 'BlogController@getView'));
 Route::post('blog/{postSlug}', 'BlogController@postView');
 */

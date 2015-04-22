@@ -1,4 +1,4 @@
-@extends('frontend/layouts/default')
+@extends('kit::frontend.layouts.default')
 
 {{-- Page title --}}
 @section('title')
@@ -18,9 +18,9 @@ Contact us ::
 	<!-- Name -->
 	<div class="row">
 		<div class="col-md-4 col-md-offset-1">
-			<div  class="form-group{{ $errors->first('name', ' error') }}">
-				<input type="text" id="name" name="name" class="form-control" placeholder="Name">
-				{{ $errors->first('name', '<span class="help-block">:message</span>') }}
+			<div  class="form-group{{ $errors->first('name', ' has-error') }}">
+				<input value="{{ Input::old('name') }}" type="text" id="name" name="name" class="form-control" placeholder="Name">
+				{{ $errors->first('name') }}
 			</div>
 		</div>
 	</div>
@@ -28,9 +28,9 @@ Contact us ::
 	<!-- Email -->
 	<div class="row">
 		<div class="col-md-4 col-md-offset-1">
-			<div  class="form-group{{ $errors->first('email', ' error') }}">
-				<input type="text" id="email" name="email" class="form-control" placeholder="Email">
-				{{ $errors->first('email', '<span class="help-block">:message</span>') }}
+			<div  class="form-group{{ $errors->first('email', ' has-error') }}">
+				<input type="text" value="{{ Input::old('email') }}" id="email" name="email" class="form-control" placeholder="Email">
+				{{ $errors->first('email') }}
 			</div>
 		</div>
 	</div>
@@ -38,9 +38,9 @@ Contact us ::
 	<!-- Description -->
 	<div class="row">
 		<div class="col-md-4 col-md-offset-1">
-			<div  class="form-group{{ $errors->first('description', ' error') }}">
-				<textarea rows="4" id="description" name="description" class="form-control" placeholder="Description"></textarea>
-				{{ $errors->first('description', '<span class="help-block">:message</span>') }}
+			<div  class="form-group{{ $errors->first('description', ' has-error') }}">
+				<textarea rows="4" id="description" name="description" class="form-control" placeholder="Description">{{ Input::old('description') }}</textarea>
+				{{ $errors->first('description') }}
 			</div>
 		</div>
 	</div>
