@@ -135,6 +135,7 @@ return [
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
+		'Illuminate\Broadcasting\BroadcastServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -150,7 +151,7 @@ return [
 		/*
 		 * Third Party Service Providers
 		 */
-		'Cartalyst\Sentry\SentryServiceProvider',
+		'Cartalyst\Sentinel\Laravel\SentinelServiceProvider',
 	],
 
 	/*
@@ -202,7 +203,9 @@ return [
 		/*
 		 * Third Party Aliases
 		 */
-		'Sentry' => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
+		'Activation' => 'Cartalyst\Sentinel\Laravel\Facades\Activation',
+		'Reminder'   => 'Cartalyst\Sentinel\Laravel\Facades\Reminder',
+		'Sentinel'   => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel',
 	],
 
 ];
