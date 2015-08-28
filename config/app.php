@@ -152,6 +152,7 @@ return [
 		 * Third Party Service Providers
 		 */
 		'Cartalyst\Sentinel\Laravel\SentinelServiceProvider',
+		Barryvdh\Debugbar\ServiceProvider::class,
 	],
 
 	/*
