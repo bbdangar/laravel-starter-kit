@@ -212,6 +212,7 @@ return [
 		'Sentinel'   => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel',
 		'Form' => Collective\Html\FormFacade::class,
 	    'Html' => Collective\Html\HtmlFacade::class,
+	    'Template' => Dakshhmehta\Helpers\TemplateFacade::class
 	],
 
 ];
