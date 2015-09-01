@@ -146,13 +146,16 @@ return [
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
 
+		// Kit related providers
 		'Kit\Providers\KitServiceProvider',
+		'Dakshhmehta\Helpers\HelpersServiceProvider',
 
 		/*
 		 * Third Party Service Providers
 		 */
 		'Cartalyst\Sentinel\Laravel\SentinelServiceProvider',
 		Barryvdh\Debugbar\ServiceProvider::class,
+		Collective\Html\HtmlServiceProvider::class,
 	],
 
 	/*
@@ -207,6 +210,9 @@ return [
 		'Activation' => 'Cartalyst\Sentinel\Laravel\Facades\Activation',
 		'Reminder'   => 'Cartalyst\Sentinel\Laravel\Facades\Reminder',
 		'Sentinel'   => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel',
+		'Form' => Collective\Html\FormFacade::class,
+	    'Html' => Collective\Html\HtmlFacade::class,
+	    'Template' => Dakshhmehta\Helpers\TemplateFacade::class
 	],
 
 ];
