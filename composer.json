@@ -7,6 +7,8 @@
 	"require": {
 		"laravel/framework": "5.1.*@dev",
 		"barryvdh/laravel-debugbar": "dev-master",
+        "cartalyst/sentinel": "2.0.*",
+        "dakshhmehta/helpers": "dev-master",
 		"laravelcollective/html": "~5.1"
 	},
 	"require-dev": {
