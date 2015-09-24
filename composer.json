@@ -7,8 +7,7 @@
 	"require": {
 		"laravel/framework": "5.1.*@dev",
 		"barryvdh/laravel-debugbar": "dev-master",
-		"laravelcollective/html": "~5.1",
-		"dakshhmehta/laravel-starter-kit": "dev-master"
+		"laravelcollective/html": "~5.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
