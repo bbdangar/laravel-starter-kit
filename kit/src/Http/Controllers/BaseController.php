@@ -6,49 +6,50 @@ use Sentry;
 use Kit\Models\User;
 use View;
 
-class BaseController extends Controller {
+class BaseController extends Controller
+{
 
-	protected $theme = 'frontend';
+    protected $theme = 'frontend';
 
-	/**
-	 * Message bag.
-	 *
-	 * @var Illuminate\Support\MessageBag
-	 */
-	protected $messageBag = null;
+    /**
+     * Message bag.
+     *
+     * @var Illuminate\Support\MessageBag
+     */
+    protected $messageBag = null;
 
-	/**
-	 * Initializer.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		//
-		$this->messageBag = new MessageBag;
-	}
+    /**
+     * Initializer.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+        $this->messageBag = new MessageBag;
+    }
 
-	/**
-	 * Setup the layout used by the controller.
-	 *
-	 * @return void
-	 */
-	protected function setupLayout()
-	{
-		if ( ! is_null($this->layout))
-		{
-			$this->layout = View::make($this->layout);
-		}
-	}
+    /**
+     * Setup the layout used by the controller.
+     *
+     * @return void
+     */
+    protected function setupLayout()
+    {
+        if (! is_null($this->layout)) {
+            $this->layout = View::make($this->layout);
+        }
+    }
 
-	public function view($uri, $data = array()){
+    public function view($uri, $data = array())
+    {
 
-		if(Sentry::check())
-			$data['currentUser'] = Sentry::getUser();
-		else
-			$data['currentUser'] = new User(['first_name' => 'Guest']);
+        if (Sentry::check()) {
+            $data['currentUser'] = Sentry::getUser(); 
+        } else {
+            $data['currentUser'] = new User(['first_name' => 'Guest']);
+        }
 
-		return View::make($this->theme.'.'.$uri, $data);
-	}
-
+        return View::make($this->theme.'.'.$uri, $data);
+    }
 }

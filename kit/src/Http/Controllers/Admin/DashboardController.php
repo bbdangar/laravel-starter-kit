@@ -3,17 +3,17 @@
 use Kit\Http\Controllers\AdminController;
 use View;
 
-class DashboardController extends AdminController {
+class DashboardController extends AdminController
+{
 
-	/**
-	 * Show the administration dashboard page.
-	 *
-	 * @return View
-	 */
-	public function getIndex()
-	{
-		// Show the page
-		return View::make('kit::backend.dashboard');
-	}
-
+    /**
+     * Show the administration dashboard page.
+     *
+     * @return View
+     */
+    public function getIndex()
+    {
+        // Show the page
+        return View::make('kit::backend.dashboard');
+    }
 }
