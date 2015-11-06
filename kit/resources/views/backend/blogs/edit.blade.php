@@ -37,7 +37,7 @@ Blog Post Update ::
 			[
 				'name' => 'content',
 				'label' => 'Content',
-				'field' => Form::editor('content', Input::old('content'))
+				'field' => Form::editor('content', Input::old('content', $post->content))
 			]
 		],
 		'Meta Data' => [
