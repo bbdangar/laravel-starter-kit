@@ -31,6 +31,10 @@ Blog Post Update ::
 				'label' => 'URL Slug',
 			],
 			[
+				'name' => 'excerpt',
+				'label' => 'Excerpt',
+			],
+			[
 				'name' => 'content',
 				'label' => 'Content',
 				'field' => Form::editor('content', Input::old('content'))

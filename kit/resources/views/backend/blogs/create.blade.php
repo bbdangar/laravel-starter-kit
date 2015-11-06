@@ -31,6 +31,10 @@ Create a New Blog Post ::
 				'label' => 'URL Slug',
 			],
 			[
+				'name' => 'excerpt',
+				'label' => 'Excerpt',
+			],
+			[
 				'name' => 'content',
 				'label' => 'Content',
 				'field' => Form::editor('content', Input::old('content'))
