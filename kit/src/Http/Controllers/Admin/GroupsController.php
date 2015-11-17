@@ -1,14 +1,14 @@
 <?php namespace Kit\Http\Controllers\Admin;
 
 use Kit\Http\Controllers\AdminController;
-use Cartalyst\Sentry\Groups\GroupExistsException;
-use Cartalyst\Sentry\Groups\GroupNotFoundException;
-use Cartalyst\Sentry\Groups\NameRequiredException;
+use Cartalyst\Sentinel\Groups\GroupExistsException;
+use Cartalyst\Sentinel\Groups\GroupNotFoundException;
+use Cartalyst\Sentinel\Groups\NameRequiredException;
 use Config;
 use Input;
 use Lang;
 use Redirect;
-use Sentry;
+use Sentinel;
 use Validator;
 use View;
 
@@ -23,7 +23,7 @@ class GroupsController extends AdminController
     public function getIndex()
     {
         // Grab all the groups
-        $groups = Sentry::getGroupProvider()->createModel()->paginate();
+        $groups = Sentinel::getRoleRepository()->createModel()->paginate();
 
         // Show the page
         return View::make('kit::backend.groups.index', compact('groups'));
@@ -37,7 +37,7 @@ class GroupsController extends AdminController
     public function getCreate()
     {
         // Get all the available permissions
-        $permissions = Config::get('permissions');
+        $permissions = Config::get('kit.permissions');
         $this->encodeAllPermissions($permissions, true);
 
         // Selected permissions
@@ -72,14 +72,19 @@ class GroupsController extends AdminController
             // We need to reverse the UI specific logic for our
             // permissions here before we create the user.
             $permissions = Input::get('permissions', array());
+            foreach ($permissions as $key => $value) {
+                $permissions[$key] = (bool) $value;
+            }
+
             $this->decodePermissions($permissions);
             app('request')->request->set('permissions', $permissions);
 
             // Get the inputs, with some exceptions
             $inputs = Input::except('_token');
 
+
             // Was the group created?
-            if ($group = Sentry::getGroupProvider()->create($inputs)) {
+            if ($group = Sentinel::getRoleRepository()->create($inputs)) {
             // Redirect to the new group page
                 return Redirect::route('update/group', $group->id)->with('success', Lang::get('kit::admin/groups/message.success.create'));
             }
@@ -106,10 +111,10 @@ class GroupsController extends AdminController
     {
         try {
             // Get the group information
-            $group = Sentry::getGroupProvider()->findById($id);
+            $group = Sentinel::getRoleRepository()->findById($id);
 
             // Get all the available permissions
-            $permissions = Config::get('permissions');
+            $permissions = Config::get('kit.permissions');
             $this->encodeAllPermissions($permissions, true);
 
             // Get this group permissions
@@ -141,7 +146,7 @@ class GroupsController extends AdminController
 
         try {
             // Get the group information
-            $group = Sentry::getGroupProvider()->findById($id);
+            $group = Sentinel::getRoleRepository()->findById($id);
         } catch (GroupNotFoundException $e) {
         // Redirect to the groups management page
             return Rediret::route('groups')->with('error', Lang::get('kit::admin/groups/message.group_not_found', compact('id')));
@@ -164,7 +169,13 @@ class GroupsController extends AdminController
         try {
             // Update the group data
             $group->name        = Input::get('name');
-            $group->permissions = Input::get('permissions');
+            $permissions = Input::get('permissions');
+
+            foreach ($permissions as $key => $value) {
+                $permissions[$key] = (bool) $value;
+            }
+
+            $group->permissions = $permissions;
 
             // Was the group updated?
             if ($group->save()) {
@@ -192,7 +203,7 @@ class GroupsController extends AdminController
     {
         try {
             // Get group information
-            $group = Sentry::getGroupProvider()->findById($id);
+            $group = Sentinel::getRoleRepository()->findById($id);
 
             // Delete the group
             $group->delete();

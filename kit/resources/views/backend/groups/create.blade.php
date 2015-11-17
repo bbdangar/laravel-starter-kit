@@ -37,7 +37,7 @@ Create a Group ::
 				<label class="control-label" for="name">Name</label>
 				<div class="controls">
 					<input type="text" name="name" id="name" value="{{ Input::old('name') }}" />
-					{{ $errors->first('name', '<span class="help-inline">:message</span>') }}
+					{!! $errors->first('name', '<span class="help-inline">:message</span>') !!}
 				</div>
 			</div>
 		</div>
@@ -57,7 +57,7 @@ Create a Group ::
 
 							<div class="radio inline">
 								<label for="{{ $permission['permission'] }}_allow" onclick="">
-									<input type="radio" value="1" id="{{ $permission['permission'] }}_allow" name="permissions[{{ $permission['permission'] }}]"{{ (array_get($selectedPermissions, $permission['permission']) === 1 ? ' checked="checked"' : '') }}>
+									<input type="radio" value="1" id="{{ $permission['permission'] }}_allow" name="permissions[{{ $permission['permission'] }}]"{{ (array_get($selectedPermissions, $permission['permission']) === true ? ' checked="checked"' : '') }}>
 									Allow
 								</label>
 							</div>
