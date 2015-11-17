@@ -37,7 +37,7 @@ User Update ::
 				<label class="control-label col-md-3" for="first_name">First Name</label>
 				<div class="col-md-9">
 					<input class="form-control" type="text" name="first_name" id="first_name" value="{{ Input::old('first_name', $user->first_name) }}" />
-					{{ $errors->first('first_name', '<span class="help-inline">:message</span>') }}
+					{!! $errors->first('first_name', '<span class="help-inline">:message</span>') !!}
 				</div>
 			</div>
 
@@ -46,7 +46,7 @@ User Update ::
 				<label class="control-label col-md-3" for="last_name">Last Name</label>
 				<div class="col-md-9">
 					<input class="form-control" type="text" name="last_name" id="last_name" value="{{ Input::old('last_name', $user->last_name) }}" />
-					{{ $errors->first('last_name', '<span class="help-inline">:message</span>') }}
+					{!! $errors->first('last_name', '<span class="help-inline">:message</span>') !!}
 				</div>
 			</div>
 
@@ -55,7 +55,7 @@ User Update ::
 				<label class="control-label col-md-3" for="email">Email</label>
 				<div class="col-md-9">
 					<input class="form-control" type="text" name="email" id="email" value="{{ Input::old('email', $user->email) }}" />
-					{{ $errors->first('email', '<span class="help-inline">:message</span>') }}
+					{!! $errors->first('email', '<span class="help-inline">:message</span>') !!}
 				</div>
 			</div>
 
@@ -64,7 +64,7 @@ User Update ::
 				<label class="control-label col-md-3" for="password">Password</label>
 				<div class="col-md-9">
 					<input type="password" name="password" id="password" value="" />
-					{{ $errors->first('password', '<span class="help-inline">:message</span>') }}
+					{!! $errors->first('password', '<span class="help-inline">:message</span>') !!}
 				</div>
 			</div>
 
@@ -73,7 +73,7 @@ User Update ::
 				<label class="control-label col-md-3" for="password_confirm">Confirm Password</label>
 				<div class="col-md-9">
 					<input type="password" name="password_confirm" id="password_confirm" value="" />
-					{{ $errors->first('password_confirm', '<span class="help-inline">:message</span>') }}
+					{!! $errors->first('password_confirm', '<span class="help-inline">:message</span>') !!}
 				</div>
 			</div>
 
@@ -85,7 +85,7 @@ User Update ::
 						<option value="1"{{ ($user->isActivated() ? ' selected="selected"' : '') }}>@lang('kit::general.yes')</option>
 						<option value="0"{{ ( ! $user->isActivated() ? ' selected="selected"' : '') }}>@lang('kit::general.no')</option>
 					</select>
-					{{ $errors->first('activated', '<span class="help-inline">:message</span>') }}
+					{!! $errors->first('activated', '<span class="help-inline">:message</span>') !!}
 				</div>
 			</div>
 

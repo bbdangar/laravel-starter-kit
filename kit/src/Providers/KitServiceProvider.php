@@ -23,32 +23,36 @@ class KitServiceProvider extends ServiceProvider
     {
         // Routes
         $router->group(['namespace' => 'Kit\Http\Controllers'], function ($router) {
-        
+
             require __DIR__.'/../Http/routes.php';
         });
 
         // Register Assets
         $this->loadViewsFrom(__DIR__.'/../../resources/views', 'kit');
         $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'kit');
+        $this->mergeConfigFrom(
+            __DIR__.'/../../config/kit.php',
+            'kit'
+        );
 
         // Register the application command
-        $this->commands($this->commands);
+         $this->commands($this->commands);
 
         // Publish the Resources
         # Migrations
-        $this->publishes([
+         $this->publishes([
             __DIR__.'/../../database/migrations/' => database_path('/migrations')
-        ], 'migrations');
+         ], 'migrations');
 
         # Seeders
-        $this->publishes([
+         $this->publishes([
             __DIR__.'/../../database/seeds/' => database_path('/seeds')
-        ], 'seeds');
+         ], 'seeds');
 
         #Configs
-        $this->publishes([
+         $this->publishes([
             __DIR__.'/../../config/' => config_path()
-        ], 'config');
+         ], 'config');
     }
 
     /**

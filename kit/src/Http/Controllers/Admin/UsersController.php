@@ -64,6 +64,11 @@ class UsersController extends AdminController
      */
     public function getCreate()
     {
+        if (! Sentinel::getUser()->hasAccess('user.create')) {
+            // Redirect to the user management page
+            return Redirect::route('users')->with('error', 'Insufficient permissions!');
+        }
+
         // Get all the available groups
         $groups = Sentinel::getRoleRepository()->get();
 
@@ -71,7 +76,7 @@ class UsersController extends AdminController
         $selectedGroups = Input::old('groups', array());
 
         // Get all the available permissions
-        $permissions = Config::get('permissions');
+        $permissions = config('kit.permissions');
         $this->encodeAllPermissions($permissions);
 
         // Selected permissions
@@ -89,6 +94,11 @@ class UsersController extends AdminController
      */
     public function postCreate()
     {
+        if (! Sentinel::getUser()->hasAccess('user.create')) {
+            // Redirect to the user management page
+            return Redirect::route('users')->with('error', 'Insufficient permissions!');
+        }
+
         // Create a new validator instance from our validation rules
         $validator = Validator::make(Input::all(), $this->validationRules);
 
@@ -109,8 +119,8 @@ class UsersController extends AdminController
             $inputs = Input::except('csrf_token', 'password_confirm', 'groups');
 
             // Was the user created?
-            if ($user = Sentinel::getUserRepository()->create($inputs)) {
-            // Assign the selected groups to this user
+            if ($user = Sentinel::register($inputs, (bool) $inputs['activated'])) {
+                // Assign the selected groups to this user
                 foreach (Input::get('groups', array()) as $groupId) {
                     $group = Sentinel::getRoleRepository()->findById($groupId);
 
@@ -149,12 +159,17 @@ class UsersController extends AdminController
      */
     public function getEdit($id = null)
     {
+        if (! Sentinel::getUser()->hasAccess('user.edit')) {
+            // Redirect to the user management page
+            return Redirect::route('users')->with('error', 'Insufficient permissions!');
+        }
+
         try {
             // Get the user information
             $user = Sentinel::getUserRepository()->findById($id);
 
             // Get this user groups
-            $userGroups = $user->roles()->lists('name', 'id');
+            $userGroups = $user->roles()->lists('name', 'id')->toArray();
 
             // Get this user permissions
             $userPermissions = array_merge(Input::old('permissions', array('superuser' => -1)), $user->getPermissions());
@@ -164,7 +179,7 @@ class UsersController extends AdminController
             $groups = Sentinel::getRoleRepository()->get();
 
             // Get all the available permissions
-            $permissions = Config::get('permissions');
+            $permissions = config('kit.permissions');
             $this->encodeAllPermissions($permissions);
         } catch (UserNotFoundException $e) {
         // Prepare the error message
@@ -186,6 +201,11 @@ class UsersController extends AdminController
      */
     public function postEdit($id = null)
     {
+        if (! Sentinel::getUser()->hasAccess('user.edit')) {
+            // Redirect to the user management page
+            return Redirect::route('users')->with('error', 'Insufficient permissions!');
+        }
+
         // We need to reverse the UI specific logic for our
         // permissions here before we update the user.
         $permissions = Input::get('permissions', array());
@@ -228,8 +248,11 @@ class UsersController extends AdminController
             $user->first_name  = Input::get('first_name');
             $user->last_name   = Input::get('last_name');
             $user->email       = Input::get('email');
-            $user->activated   = Input::get('activated', $user->activated);
             $user->permissions = Input::get('permissions');
+
+            $activation = $user->activations()->first();
+            $activation->completed = Input::get('activated');
+            $activation->save();
 
             // Do we want to update the user password?
             if ($password) {
@@ -237,7 +260,7 @@ class UsersController extends AdminController
             }
 
             // Get the current user groups
-            $userGroups = $user->groups()->lists('group_id', 'group_id');
+            $userGroups = $user->roles()->lists('role_id', 'role_id')->toArray();
 
             // Get the selected groups
             $selectedGroups = Input::get('groups', array());
@@ -251,14 +274,14 @@ class UsersController extends AdminController
             foreach ($groupsToAdd as $groupId) {
                 $group = Sentinel::getRoleRepository()->findById($groupId);
 
-                $user->addGroup($group);
+                $user->roles()->attach($group);
             }
 
             // Remove the user from groups
             foreach ($groupsToRemove as $groupId) {
                 $group = Sentinel::getRoleRepository()->findById($groupId);
 
-                $user->removeGroup($group);
+                $user->roles()->detach($group);
             }
 
             // Was the user updated?
@@ -294,7 +317,7 @@ class UsersController extends AdminController
 
             // Check if we are not trying to delete ourselves
             if ($user->id === Sentinel::getUser()->id) {
-            // Prepare the error message
+                // Prepare the error message
                 $error = Lang::get('kit::admin/users/message.error.delete');
 
                 // Redirect to the user management page
@@ -302,8 +325,8 @@ class UsersController extends AdminController
             }
 
             // Do we have permission to delete this user?
-            if ($user->isSuperUser() and ! Sentinel::getUser()->isSuperUser()) {
-            // Redirect to the user management page
+            if (! Sentinel::getUser()->hasAccess('user.delete')) {
+                // Redirect to the user management page
                 return Redirect::route('users')->with('error', 'Insufficient permissions!');
             }
 
@@ -335,6 +358,11 @@ class UsersController extends AdminController
         try {
             // Get user information
             $user = Sentinel::getUserRepository()->createModel()->withTrashed()->find($id);
+
+            if (! Sentinel::getUser()->hasAccess('user.delete')) {
+                // Redirect to the user management page
+                return Redirect::route('users')->with('error', 'Insufficient permissions!');
+            }
 
             // Restore the user
             $user->restore();

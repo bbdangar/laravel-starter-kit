@@ -182,7 +182,7 @@ class AppInstallCommand extends Command
     {
         do {
             // Ask the user to input the user password
-            $password = $this->ask('Please enter your user password: ');
+            $password = $this->secret('Please enter your user password: ');
 
             // Check if email is valid
             if ($password == '') {
@@ -222,7 +222,9 @@ class AppInstallCommand extends Command
             'slug'          => 'admin',
             'permissions' => array(
                 'admin' => true,
-                'users' => true
+                'user.create' => true,
+                'user.edit' => true,
+                'user.delete' => true,
             )
         ));
 
@@ -238,28 +240,12 @@ class AppInstallCommand extends Command
      */
     protected function sentinelCreateUser()
     {
-        // Prepare the user data array.
-        $data = array_merge($this->userData, array(
-            'permissions' => array(
-                'admin' => true,
-                'user'  => true,
-            ),
-        ));
-
         // Create the user
-        $user = Sentinel::getUserRepository()->create($data);
+        $user = Sentinel::registerAndActivate($this->userData);
 
         // Associate the Admin group to this user
         $group = Sentinel::getRoleRepository()->findById(1);
         $group->users()->attach($user);
-
-        // Activate the user
-        $activation = Activation::create($user);
-        $activation->fill([
-            'completed'    => true,
-            'completed_at' => Carbon::now(),
-        ]);
-        $activation->save();
 
         // Show the success message
         $this->comment('');
